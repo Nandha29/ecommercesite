@@ -1,0 +1,23 @@
+name: Automatic Merge
+
+on:
+  schedule:
+    - cron: '*/2 * * * *'  # At 01:00 on Mondays
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Merge staging to main
+        run: git merge origin/staging --no-ff --no-commit
+
+      - name: Push changes
+        run: |
+          git config --global user.name "Your Name"
+          git config --global user.email "your@email.com"
+          git commit -m "Merge staging to main [Auto]"
+          git push origin HEAD:main
